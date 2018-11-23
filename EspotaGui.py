@@ -67,14 +67,14 @@ class Ui_Form(QtWidgets.QWidget):
         icon.addPixmap(QtGui.QPixmap("logo-Domo.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         Form.setWindowIcon(icon)
         self.checkBox_SIPFFS = QtWidgets.QCheckBox(Form)
-        self.checkBox_SIPFFS.setGeometry(QtCore.QRect(400, 64, 96, 17))
+        self.checkBox_SIPFFS.setGeometry(QtCore.QRect(400, 78, 96, 17))
         font = QtGui.QFont()
         font.setBold(True)
         font.setWeight(75)
         self.checkBox_SIPFFS.setFont(font)
         self.checkBox_SIPFFS.setObjectName("checkBox_SIPFFS")
         self.label_Tx_Chemin = QtWidgets.QLabel(Form)
-        self.label_Tx_Chemin.setGeometry(QtCore.QRect(0, 10, 121, 31))
+        self.label_Tx_Chemin.setGeometry(QtCore.QRect(0, 26, 121, 31))
         font = QtGui.QFont()
         font.setBold(True)
         font.setWeight(75)
@@ -82,7 +82,7 @@ class Ui_Form(QtWidgets.QWidget):
         self.label_Tx_Chemin.setFrameShape(QtWidgets.QFrame.Box)
         self.label_Tx_Chemin.setObjectName("label_Tx_Chemin")
         self.label_Chemin = QtWidgets.QLabel(Form)
-        self.label_Chemin.setGeometry(QtCore.QRect(120, 10, 391, 31))
+        self.label_Chemin.setGeometry(QtCore.QRect(120, 26, 391, 31))
         font = QtGui.QFont()
         font.setBold(True)
         font.setWeight(75)
@@ -111,6 +111,7 @@ class Ui_Form(QtWidgets.QWidget):
         font.setBold(True)
         font.setWeight(75)
         self.pushButton_Fichier.setFont(font)
+        self.pushButton_Fichier.setFlat(False)
         self.pushButton_Fichier.setObjectName("pushButton_Fichier")
         self.pushButton_MaJ = QtWidgets.QPushButton(self.splitter_2)
         self.pushButton_MaJ.setMinimumSize(QtCore.QSize(250, 48))
@@ -122,7 +123,7 @@ class Ui_Form(QtWidgets.QWidget):
         self.pushButton_MaJ.setFlat(False)
         self.pushButton_MaJ.setObjectName("pushButton_MaJ")
         self.splitter_7 = QtWidgets.QSplitter(Form)
-        self.splitter_7.setGeometry(QtCore.QRect(12, 62, 365, 133))
+        self.splitter_7.setGeometry(QtCore.QRect(12, 74, 365, 133))
         self.splitter_7.setOrientation(QtCore.Qt.Vertical)
         self.splitter_7.setObjectName("splitter_7")
         self.splitter = QtWidgets.QSplitter(self.splitter_7)
@@ -225,13 +226,21 @@ class Ui_Form(QtWidgets.QWidget):
         self.lineEdit_MdP.setFrame(True)
         self.lineEdit_MdP.setEchoMode(QtWidgets.QLineEdit.Password)
         self.lineEdit_MdP.setObjectName("lineEdit_MdP")
+        self.pushButton_EN = QtWidgets.QPushButton(Form)
+        self.pushButton_EN.setGeometry(QtCore.QRect(404, 2, 107, 23))
+        font = QtGui.QFont()
+        font.setBold(True)
+        font.setWeight(75)
+        self.pushButton_EN.setFont(font)
+        self.pushButton_EN.setObjectName("pushButton_EN")
 
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
 
         #Commande des boutons
         self.pushButton_Fichier.clicked.connect(self.setOpenFileName)
-        self.pushButton_MaJ.clicked.connect(CdeFlash)        
+        self.pushButton_MaJ.clicked.connect(CdeFlash)
+        self.pushButton_EN.clicked.connect(Traduction)            
 
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
@@ -239,7 +248,7 @@ class Ui_Form(QtWidgets.QWidget):
         self.checkBox_SIPFFS.setToolTip(_translate("Form", "<html><head/><body><p>Cochez pour téléverser votre fichier SIPFFS</p></body></html>"))
         self.checkBox_SIPFFS.setText(_translate("Form", " SIPFFS"))
         self.label_Tx_Chemin.setText(_translate("Form", "Chemin du fichier: "))
-        self.label_Chemin.setText(_translate("Form", " "))
+        self.label_Chemin.setText(_translate("Form", ""))
         self.pushButton_Fichier.setText(_translate("Form", "Sélection du fichier binaire"))
         self.pushButton_MaJ.setText(_translate("Form", "Mise à jour"))
         self.label_IP_Module.setText(_translate("Form", "Adresse IP Module: "))
@@ -251,10 +260,33 @@ class Ui_Form(QtWidgets.QWidget):
         self.lineEdit_IP_Hote.setToolTip(_translate("Form", "<html><head/><body><p>Vide= Valeur par défaut ou Entrez votre adresse IP:192.168.1.20</p></body></html>"))
         self.label_Port_Hote.setText(_translate("Form", "Port Hôte: "))
         self.lineEdit_Port_Hote.setToolTip(_translate("Form", "<html><head/><body><p>Vide= Valeur par défaut ou Entrez votre port : 1000</p></body></html>"))
-        self.lineEdit_Port_Hote.setText(_translate("Form", " "))
+        self.lineEdit_Port_Hote.setText(_translate("Form", ""))
         self.label_MdP.setText(_translate("Form", "Mot de passe: "))
         self.lineEdit_MdP.setToolTip(_translate("Form", "<html><head/><body><p>Vide= Valeur par défaut ou Entrez votre mot de passe</p></body></html>"))
+        self.pushButton_EN.setText(_translate("Form", "English"))
 
+    def retranslateUi_En(self, Form):
+        _translate = QtCore.QCoreApplication.translate
+        Form.setWindowTitle(_translate("Form", "Gui Estopa"))
+        self.checkBox_SIPFFS.setToolTip(_translate("Form", "<html><head/><body><p>Check to upload your file SIPFFS</p></body></html>"))
+        self.checkBox_SIPFFS.setText(_translate("Form", " SIPFFS"))
+        self.label_Tx_Chemin.setText(_translate("Form", "File path: "))
+        self.label_Chemin.setText(_translate("Form", ""))
+        self.pushButton_Fichier.setText(_translate("Form", "Selecting the binary file"))
+        self.pushButton_MaJ.setText(_translate("Form", "Update"))
+        self.label_IP_Module.setText(_translate("Form", "IP address module: "))
+        self.lineEdit_IP_Module.setToolTip(_translate("Form", "<html><head/><body><p>Enter your address IP:192.168.1.20</p></body></html>"))
+        self.lineEdit_IP_Module.setText(_translate("Form", "192.168."))
+        self.label_Port_Module.setText(_translate("Form", "Port Module: "))
+        self.lineEdit_Port_Module.setToolTip(_translate("Form", "<html><head/><body><p>Empty = Default value or number of the port: 8266</p></body></html>"))
+        self.label_IP_Hote.setText(_translate("Form", "IP adress Host: "))
+        self.lineEdit_IP_Hote.setToolTip(_translate("Form", "<html><head/><body><p>Empty = Default value or Enter your IP address:192.168.1.20</p></body></html>"))
+        self.label_Port_Hote.setText(_translate("Form", "Port Host: "))
+        self.lineEdit_Port_Hote.setToolTip(_translate("Form", "<html><head/><body><p>Empty = Default value or Enter your port : 1000</p></body></html>"))
+        self.lineEdit_Port_Hote.setText(_translate("Form", ""))
+        self.label_MdP.setText(_translate("Form", "Password: "))
+        self.lineEdit_MdP.setToolTip(_translate("Form", "<html><head/><body><p>Empty= Default value or Enter your password</p></body></html>"))
+        self.pushButton_EN.setText(_translate("Form", "French"))
 
     def setOpenFileName(self):    
         options = QFileDialog.Options()
@@ -278,6 +310,12 @@ def CdeFlash():
     if ui.lineEdit_IP_Hote.text()!="":
         sys.argv.append("--host_ip="+(ui.lineEdit_IP_Hote.text()))
     flashing(sys.argv)
+
+def Traduction():
+    if ui.pushButton_EN.text()=="English":
+        ui.retranslateUi_En(Form)
+    else:
+        ui.retranslateUi(Form)
  
 # update_progress() : Displays or updates a console progress bar
 ## Accepts a float between 0 and 1. Any int will be converted to a float.

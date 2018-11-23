@@ -7,4 +7,6 @@ QT5 installation required-Installation de QT5 requis
 
 pip install PyQt5
 
-<img src="https://github.com/christophe94700/Espota_Gui/raw/master/EspotaGui.png" alt="enter image description here" style="max-width:100%;">
+<img src="https://github.com/christophe94700/Espota_Gui/raw/master/EspotaGuiFR.png" alt="enter image description here" style="max-width:100%;">
+
+<img src="https://github.com/christophe94700/Espota_Gui/raw/master/EspotaGuiEN.png" alt="enter image description here" style="max-width:100%;">
