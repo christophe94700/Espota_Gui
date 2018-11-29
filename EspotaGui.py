@@ -32,6 +32,10 @@
 # V1.0.0 2018-11-23
 # Create grapic version with QT5 and Python 3.7
 # Christophe Caron www.caron.ws
+#Changes 
+# V1.0.1 2018-11-18
+# validation of values
+# Christophe Caron www.caron.ws
 
 from __future__ import print_function
 import socket
@@ -56,6 +60,7 @@ from PyQt5.QtWidgets import (QApplication, QCheckBox, QColorDialog, QDialog,
         QErrorMessage, QFileDialog, QFontDialog, QFrame, QGridLayout,
         QInputDialog, QLabel, QLineEdit, QMessageBox, QPushButton,QAction)
 
+import ipaddress
 
 
 class Ui_Form(QtWidgets.QWidget):
@@ -234,17 +239,28 @@ class Ui_Form(QtWidgets.QWidget):
         self.pushButton_EN.setFont(font)
         self.pushButton_EN.setObjectName("pushButton_EN")
 
+        self.messageBox = QMessageBox()
+        self.messageBox.setIcon(QMessageBox.Information)
+        self.messageBox.setText("This is a message box")       
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap("logo-Domo.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.messageBox.setWindowIcon(icon)
+        self.messageBox.setStandardButtons(QMessageBox.Ok)
+
+
+
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
 
         #Commande des boutons
         self.pushButton_Fichier.clicked.connect(self.setOpenFileName)
         self.pushButton_MaJ.clicked.connect(CdeFlash)
-        self.pushButton_EN.clicked.connect(Traduction)            
+        self.pushButton_EN.clicked.connect(Traduction)  
+
 
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
-        Form.setWindowTitle(_translate("Form", "Gui Estopa"))
+        Form.setWindowTitle(_translate("Form", "Estopa Gui"))
         self.checkBox_SIPFFS.setToolTip(_translate("Form", "<html><head/><body><p>Cochez pour téléverser votre fichier SIPFFS</p></body></html>"))
         self.checkBox_SIPFFS.setText(_translate("Form", " SIPFFS"))
         self.label_Tx_Chemin.setText(_translate("Form", "Chemin du fichier: "))
@@ -253,7 +269,7 @@ class Ui_Form(QtWidgets.QWidget):
         self.pushButton_MaJ.setText(_translate("Form", "Mise à jour"))
         self.label_IP_Module.setText(_translate("Form", "Adresse IP Module: "))
         self.lineEdit_IP_Module.setToolTip(_translate("Form", "<html><head/><body><p>Entrez votre adresse IP:192.168.1.20</p></body></html>"))
-        self.lineEdit_IP_Module.setText(_translate("Form", "192.168."))
+        self.lineEdit_IP_Module.setText(_translate("Form", ""))
         self.label_Port_Module.setText(_translate("Form", "Port Module: "))
         self.lineEdit_Port_Module.setToolTip(_translate("Form", "<html><head/><body><p>Vide=Valeur par défaut ou numéro du port: 8266</p></body></html>"))
         self.label_IP_Hote.setText(_translate("Form", "Adresse IP Hôte: "))
@@ -264,10 +280,11 @@ class Ui_Form(QtWidgets.QWidget):
         self.label_MdP.setText(_translate("Form", "Mot de passe: "))
         self.lineEdit_MdP.setToolTip(_translate("Form", "<html><head/><body><p>Vide= Valeur par défaut ou Entrez votre mot de passe</p></body></html>"))
         self.pushButton_EN.setText(_translate("Form", "English"))
+        self.messageBox.setWindowTitle(_translate("Form","Message d'érreur"))
 
     def retranslateUi_En(self, Form):
         _translate = QtCore.QCoreApplication.translate
-        Form.setWindowTitle(_translate("Form", "Gui Estopa"))
+        Form.setWindowTitle(_translate("Form", "Estopa Gui"))
         self.checkBox_SIPFFS.setToolTip(_translate("Form", "<html><head/><body><p>Check to upload your file SIPFFS</p></body></html>"))
         self.checkBox_SIPFFS.setText(_translate("Form", " SIPFFS"))
         self.label_Tx_Chemin.setText(_translate("Form", "File path: "))
@@ -276,7 +293,7 @@ class Ui_Form(QtWidgets.QWidget):
         self.pushButton_MaJ.setText(_translate("Form", "Update"))
         self.label_IP_Module.setText(_translate("Form", "IP address module: "))
         self.lineEdit_IP_Module.setToolTip(_translate("Form", "<html><head/><body><p>Enter your address IP:192.168.1.20</p></body></html>"))
-        self.lineEdit_IP_Module.setText(_translate("Form", "192.168."))
+        self.lineEdit_IP_Module.setText(_translate("Form", ""))
         self.label_Port_Module.setText(_translate("Form", "Port Module: "))
         self.lineEdit_Port_Module.setToolTip(_translate("Form", "<html><head/><body><p>Empty = Default value or number of the port: 8266</p></body></html>"))
         self.label_IP_Hote.setText(_translate("Form", "IP adress Host: "))
@@ -287,6 +304,7 @@ class Ui_Form(QtWidgets.QWidget):
         self.label_MdP.setText(_translate("Form", "Password: "))
         self.lineEdit_MdP.setToolTip(_translate("Form", "<html><head/><body><p>Empty= Default value or Enter your password</p></body></html>"))
         self.pushButton_EN.setText(_translate("Form", "French"))
+        self.messageBox.setWindowTitle(_translate("Form","Error message"))
 
     def setOpenFileName(self):    
         options = QFileDialog.Options()
@@ -300,14 +318,53 @@ class Ui_Form(QtWidgets.QWidget):
 
 def CdeFlash():
     ui.textEdit.setText("")
+    if ui.label_Chemin.text()=="":
+        ui.messageBox.setText("No files selected")
+        if ui.pushButton_EN.text() !="French": ui.messageBox.setText("Aucun fichier selectionné")
+        ui.messageBox.exec_() 
+        return
+    try:
+        ip = ipaddress.ip_address(ui.lineEdit_IP_Module.text())
+        ui.messageBox.setText("Invalid IP address for module")
+    except ValueError:
+        if ui.pushButton_EN.text() !="French": ui.messageBox.setText("Adresse IP invalide pour le module")
+        ui.messageBox.exec_()
+        return
+    except:
+        if ui.pushButton_EN.text() !="French": ui.messageBox.setText("Adresse IP invalide pour le module")
+        ui.messageBox.exec_()
+        return
     sys.argv=["-i",ui.lineEdit_IP_Module.text(),"-f",ui.label_Chemin.text(),"--auth="+ui.lineEdit_MdP.text(),"-r"]
     if ui.checkBox_SIPFFS.isChecked()==True:
         sys.argv.append("-s")
     if ui.lineEdit_Port_Module.text()!="":
+        validation=checkIntValue(ui.lineEdit_Port_Module.text(),5000,60000)
+        if validation=="ko":
+            ui.messageBox.setText("Invalid value for module port")
+            if ui.pushButton_EN.text() !="French": ui.messageBox.setText("Valeur invalide pour le port du module")
+            ui.messageBox.exec_()
+            return
         sys.argv.append("--port="+(ui.lineEdit_Port_Module.text()))
     if ui.lineEdit_Port_Hote.text()!="":
+        validation=checkIntValue(ui.lineEdit_Port_Hote.text(),10000,60000)
+        if validation=="ko":
+            ui.messageBox.setText("Invalid value for host port")
+            if ui.pushButton_EN.text() !="French": ui.messageBox.setText("Valeur invalide pour le port de l'hôte")
+            ui.messageBox.exec_()
+            return
         sys.argv.append("--host_port="+(ui.lineEdit_Port_Hote.text()))
     if ui.lineEdit_IP_Hote.text()!="":
+        try:
+            ip = ipaddress.ip_address(ui.lineEdit_IP_Hote.text())
+            ui.messageBox.setText("Invalid IP address for host")
+        except ValueError:
+            if ui.pushButton_EN.text() !="French": ui.messageBox.setText("Adresse IP invalide pour l'hôte")
+            ui.messageBox.exec_()
+            return
+        except:
+            if ui.pushButton_EN.text() !="French": ui.messageBox.setText("Adresse IP invalide pour l'hôte")
+            ui.messageBox.exec_()
+            return
         sys.argv.append("--host_ip="+(ui.lineEdit_IP_Hote.text()))
     flashing(sys.argv)
 
@@ -316,7 +373,19 @@ def Traduction():
         ui.retranslateUi_En(Form)
     else:
         ui.retranslateUi(Form)
- 
+
+def checkIntValue(valeur,minValue,maxValue):
+    try:
+        intTarget = int(valeur)
+        if intTarget <minValue  or intTarget > maxValue:
+            return("ko")
+        else:
+            return("ok")
+    except ValueError:
+        return("ko")
+    except:
+        return ("ko") 
+
 # update_progress() : Displays or updates a console progress bar
 ## Accepts a float between 0 and 1. Any int will be converted to a float.
 ## A value under 0 represents a 'halt'.
